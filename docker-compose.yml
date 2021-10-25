@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  basic:
+    build: ./01-basic
+    # volumes:
+    #   - .:/app
+    ports:
+      - "5001:5000"
+    environment:
+      - PYTHONUNBUFFERED=1
