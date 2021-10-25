@@ -9,3 +9,9 @@ services:
       - "5001:5000"
     environment:
       - PYTHONUNBUFFERED=1
+
+  connexion:
+    build: ./02-connexion
+    ports:
+      - "5002:5000"
+      - "5003:8080"
