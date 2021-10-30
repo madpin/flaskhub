@@ -1,0 +1,6 @@
+click
+selenium
+# gunicorn
+# flask
+beautifulsoup4
+requests

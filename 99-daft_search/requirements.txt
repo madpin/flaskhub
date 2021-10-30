@@ -1,0 +1,6 @@
+uvicorn
+fastapi
+beautifulsoup4
+python-dateutil
+ddtrace
+https://github.com/AnthonyBloomer/daftlistings/archive/master.zip

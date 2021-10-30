@@ -1,6 +1,14 @@
 version: '3'
 
 services:
+  dd-agent:
+    image: datadog/agent:latest
+    volumes:
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+      - /proc/:/host/proc/:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    env_file:
+        - ./secrets_dd.env
   basic:
     build: ./01-basic
     # volumes:
@@ -15,3 +23,51 @@ services:
     ports:
       - "5002:5000"
       - "5003:8080"
+
+  fastapi:
+    build: ./03-fastapi
+    ports:
+      - "5004:8000"
+
+  fastapi_basic:
+    build: ./03.1-fastapi_basic
+    ports:
+      - "5005:8000"
+
+  here_cli:
+    build: ./04-here_cli
+    env_file:
+        - ./04-here_cli/secrets.env
+
+
+  selenium:
+    build: ./05-selenium
+    volumes:
+      - ./05-selenium/data:/data
+
+  daft_search:
+    build: ./99-daft_search
+    depends_on:
+      - dd-agent
+    environment:
+      - DD_SERVICE="daft_info"
+      - DD_ENV="dev"
+      - DD_LOGS_INJECTION=true
+      - DD_TRACE_SAMPLE_RATE=1
+      - DD_AGENT_HOST=dd-agent
+      - DD_TRACE_AGENT_PORT=8126
+    ports:
+      - "9901:8000"
+
+  notification:
+    build: ./98-notification
+    env_file:
+        - ./98-notification/secrets.env
+    ports:
+      - "9902:8000"
+
+
+  template:
+    build: ./90-template
+    ports:
+      - "8081:8081"
